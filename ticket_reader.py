@@ -8,11 +8,12 @@ analiza el texto con regex para encontrar artículos y totales.
 
 # 1. Importaciones de la biblioteca estándar (ordenadas)
 import re
+import csv
+import json
 
 # 2. Importaciones de terceros (ordenadas)
 import cv2
 import numpy as np
-import pandas as pd
 import pytesseract
 from PIL import Image
 
@@ -65,9 +66,9 @@ def extract_text_from_image(image_path: str) -> str:
         str: El texto crudo extraído de la imagen.
     """
     image = preprocess_image(image_path)
+#    image = Image.open(image_path)
     
     # Usar Tesseract para convertir la imagen preprocesada en texto
-    # lang="eng" es para inglés. Cambiar a "spa" si el recibo está en español.
     text = pytesseract.image_to_string(image, lang="eng")
     return text
 
@@ -87,11 +88,11 @@ def extract_items_and_resume(text: str) -> tuple:
     """
     # Patrón para artículos: (Texto) (dígitos) ($precio)
     # Ej: "PRODUCTO X 1 $10.00"
-    pattern_items = r"([A-Za-z\s]+)\s+\d+\s(\$\d+\.\d{2})"
+    pattern_items = r"([A-Za-z\s]+)\s+\d+\s+(\$\d+\.\d{2})"
     
     # Patrón para resumen: (Texto) ($precio)
     # Ej: "SUBTOTAL $20.00"
-    pattern_resume = r"([A-Za-z\s]+)\s(\$\d+\.\d{2})"
+    pattern_resume = r"([A-Za-z\s]+)\s+(\$\d+\.\d{2})"
 
     items = re.findall(pattern_items, text)
     resume = re.findall(pattern_resume, text)
@@ -107,7 +108,7 @@ def print_extracted_data(items: list, resume: list):
         items (list): Lista de tuplas (item, precio).
         resume (list): Lista de tuplas (detalle, total).
     """
-    print("📋 Artículos encontrados:")
+    print("Artículos encontrados:")
     if not items:
         print("...ninguno.")
         
@@ -115,7 +116,7 @@ def print_extracted_data(items: list, resume: list):
         # .strip() limpia espacios en blanco al inicio o final
         print(f"{item.strip()} → {price}")
 
-    print("\n💰 Resumen:")
+    print("\nResumen:")
     if not resume:
         print("...ninguno.")
         
@@ -142,7 +143,7 @@ def extracted_data_2CSV(items: list, resume: list):
             writer.writerows(
                 [item.strip(), price] for item, price in items
             )
-        print("\n💾 Artículos guardados en 'items.csv'")
+        print("\nArtículos guardados en 'items.csv'")
         
     except IOError as e:
         print(f"Error al escribir 'items.csv': {e}")
@@ -156,7 +157,7 @@ def extracted_data_2CSV(items: list, resume: list):
             writer.writerows(
                 [detail.strip(), total] for detail, total in resume
             )
-        print("💾 Resumen guardado en 'resume.csv'")
+        print("Resumen guardado en 'resume.csv'")
         
     except IOError as e:
         print(f"Error al escribir 'resume.csv': {e}")
@@ -190,7 +191,7 @@ def extracted_data_2JSON(items: list, resume: list):
         with open("receipt_data.json", "w", encoding='utf-8') as f:
             # indent=4 crea un archivo "pretty-printed" (legible)
             json.dump(data, f, indent=4, ensure_ascii=False)
-        print("💾 Datos guardados en 'receipt_data.json'")
+        print("Datos guardados en 'receipt_data.json'")
     
     except IOError as e:
         print(f"Error al escribir 'receipt_data.json': {e}")

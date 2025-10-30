@@ -1,0 +1,46 @@
+{
+    "items": [
+        {
+            "item": "Eric Steer\n\nName Qty Price\nLorem ipsum",
+            "price": "$9.20"
+        },
+        {
+            "item": "Lorem ipsum dolor sit",
+            "price": "$19.20"
+        },
+        {
+            "item": "Lorem ipsum dolor sit amet",
+            "price": "$15.00"
+        },
+        {
+            "item": "Lorem ipsum",
+            "price": "$15.00"
+        },
+        {
+            "item": "Lorem ipsum",
+            "price": "$15.00"
+        },
+        {
+            "item": "Lorem ipsum dolor sit",
+            "price": "$15.00"
+        },
+        {
+            "item": "Lorem ipsum",
+            "price": "$19.20"
+        }
+    ],
+    "resume": [
+        {
+            "detail": "Pntereenn\npeeeeeenn\n\nSub Total",
+            "total": "$107.60"
+        },
+        {
+            "detail": "CASH",
+            "total": "$200.00"
+        },
+        {
+            "detail": "CHANGE",
+            "total": "$92.40"
+        }
+    ]
+}
