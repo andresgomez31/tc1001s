@@ -12,6 +12,7 @@ import re
 # 2. Importaciones de terceros (ordenadas)
 import cv2
 import numpy as np
+import pandas as pd
 import pytesseract
 from PIL import Image
 
@@ -121,6 +122,79 @@ def print_extracted_data(items: list, resume: list):
     for detail, total in resume:
         print(f"{detail.strip()} → {total}")
 
+def extracted_data_2CSV(items: list, resume: list):
+    """
+    Recibe los datos extraídos para guardarlos como 2 archivos CSV: 
+    uno para Items y otro para resumen.
+
+    Args:
+        items (list): Lista de tuplas (item, precio).
+        resume (list): Lista de tuplas (detalle, total).
+    """
+    
+    # 1. Guardar Artículos (Items)
+    try:
+        # newline='' es necesario para la escritura correcta de CSV
+        with open("items.csv", "w", newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(["Item", "Price"])  # Escribir cabecera
+            # Escribir datos, limpiando espacios en blanco
+            writer.writerows(
+                [item.strip(), price] for item, price in items
+            )
+        print("\n💾 Artículos guardados en 'items.csv'")
+        
+    except IOError as e:
+        print(f"Error al escribir 'items.csv': {e}")
+
+    # 2. Guardar Resumen
+    try:
+        with open("resume.csv", "w", newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(["Detail", "Total"]) # Escribir cabecera
+            # Escribir datos, limpiando espacios en blanco
+            writer.writerows(
+                [detail.strip(), total] for detail, total in resume
+            )
+        print("💾 Resumen guardado en 'resume.csv'")
+        
+    except IOError as e:
+        print(f"Error al escribir 'resume.csv': {e}")
+
+
+def extracted_data_2JSON(items: list, resume: list):
+    """
+    Guarda los datos extraídos en un único archivo JSON estructurado.
+
+    Args:
+        items (list): Lista de tuplas (item, precio).
+        resume (list): Lista de tuplas (detalle, total).
+    """
+    
+    # Convertir listas de tuplas a listas de diccionarios para un JSON más legible
+    items_list = [
+        {"item": item.strip(), "price": price} for item, price in items
+    ]
+    resume_list = [
+        {"detail": detail.strip(), "total": total} for detail, total in resume
+    ]
+    
+    # Combinar en un solo diccionario
+    data = {
+        "items": items_list,
+        "resume": resume_list
+    }
+    
+    # Guardar en archivo
+    try:
+        with open("receipt_data.json", "w", encoding='utf-8') as f:
+            # indent=4 crea un archivo "pretty-printed" (legible)
+            json.dump(data, f, indent=4, ensure_ascii=False)
+        print("💾 Datos guardados en 'receipt_data.json'")
+    
+    except IOError as e:
+        print(f"Error al escribir 'receipt_data.json': {e}")
+
 
 def main():
     """
@@ -130,7 +204,16 @@ def main():
         image_path = "receipt.jpg"
         text = extract_text_from_image(image_path)
         items, resume = extract_items_and_resume(text)
+        
+        # 1. Imprimir en consola
         print_extracted_data(items, resume)
+        
+        # 2. Guardar en CSV (Llamada a la nueva función)
+        extracted_data_2CSV(items, resume)
+        
+        # 3. Guardar en JSON (Llamada a la nueva función)
+        extracted_data_2JSON(items, resume)
+
     except FileNotFoundError:
         print(f"Error: No se encontró el archivo '{image_path}'.")
     except Exception as e:
