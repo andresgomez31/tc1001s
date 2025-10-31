@@ -1,46 +1,25 @@
 {
     "items": [
         {
-            "item": "Eric Steer\n\nName Qty Price\nLorem ipsum",
-            "price": "$9.20"
+            "item": "Name Qty Price\nBanana",
+            "price": "$10.00"
         },
         {
-            "item": "Lorem ipsum dolor sit",
-            "price": "$19.20"
-        },
-        {
-            "item": "Lorem ipsum dolor sit amet",
+            "item": "Apple",
             "price": "$15.00"
         },
         {
-            "item": "Lorem ipsum",
-            "price": "$15.00"
+            "item": "Pineapple",
+            "price": "$18.90"
         },
         {
-            "item": "Lorem ipsum",
-            "price": "$15.00"
+            "item": "Cookies",
+            "price": "$170.00"
         },
         {
-            "item": "Lorem ipsum dolor sit",
-            "price": "$15.00"
-        },
-        {
-            "item": "Lorem ipsum",
-            "price": "$19.20"
+            "item": "Chocolate",
+            "price": "$2.40"
         }
     ],
-    "resume": [
-        {
-            "detail": "Pntereenn\npeeeeeenn\n\nSub Total",
-            "total": "$107.60"
-        },
-        {
-            "detail": "CASH",
-            "total": "$200.00"
-        },
-        {
-            "detail": "CHANGE",
-            "total": "$92.40"
-        }
-    ]
+    "resume": []
 }

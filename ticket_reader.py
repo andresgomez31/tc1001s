@@ -66,7 +66,7 @@ def extract_text_from_image(image_path: str) -> str:
         str: El texto crudo extraído de la imagen.
     """
     image = preprocess_image(image_path)
-#    image = Image.open(image_path)
+    image = Image.open(image_path)
     
     # Usar Tesseract para convertir la imagen preprocesada en texto
     text = pytesseract.image_to_string(image, lang="eng")
@@ -202,18 +202,20 @@ def main():
     Función principal para ejecutar el flujo completo del script.
     """
     try:
-        image_path = "receipt.jpg"
-        text = extract_text_from_image(image_path)
-        items, resume = extract_items_and_resume(text)
-        
-        # 1. Imprimir en consola
-        print_extracted_data(items, resume)
-        
-        # 2. Guardar en CSV (Llamada a la nueva función)
-        extracted_data_2CSV(items, resume)
-        
-        # 3. Guardar en JSON (Llamada a la nueva función)
-        extracted_data_2JSON(items, resume)
+        paths = ["receipt.png"]
+
+        for im_path in paths: 
+            text = extract_text_from_image(im_path)
+            items, resume = extract_items_and_resume(text)
+            
+            # 1. Imprimir en consola
+            print_extracted_data(items, resume)
+            
+            # 2. Guardar en CSV (Llamada a la nueva función)
+            extracted_data_2CSV(items, resume)
+            
+            # 3. Guardar en JSON (Llamada a la nueva función)
+            extracted_data_2JSON(items, resume)
 
     except FileNotFoundError:
         print(f"Error: No se encontró el archivo '{image_path}'.")
